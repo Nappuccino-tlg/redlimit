@@ -15,10 +15,10 @@ pip install redlimit
 ## The limiter everybody writes
 
 ```python
-current = await redis.get(key)          # read
-if current >= limit:                    # decide
+current = await redis.get(key)  # read
+if current >= limit:  # decide
     return False
-await redis.incr(key)                   # write, too late
+await redis.incr(key)  # write, too late
 return True
 ```
 
@@ -56,12 +56,13 @@ from redlimit import FixedWindow, RateLimited
 
 limiter = FixedWindow(redis, limit=10, window=900)
 
+
 async def sign_in(email: str, password: str, ip: str) -> User:
     async with limiter.attempt([f"ip:{ip}", f"email:{email}"]) as attempt:
         user = await users.find(email)
         if user is None or not verify(password, user.hash):
-            raise Unauthorized          # the attempt keeps its cost
-        attempt.refund()                # it was the owner, so it was free
+            raise Unauthorized  # the attempt keeps its cost
+        attempt.refund()  # it was the owner, so it was free
         return user
 ```
 
