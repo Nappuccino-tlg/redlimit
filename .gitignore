@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+.idea/
+.vscode/
+
+# Local dev-server config for the Claude Code preview pane
+.claude/

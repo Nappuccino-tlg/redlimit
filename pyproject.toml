@@ -1,0 +1,58 @@
+[project]
+name = "redlimit"
+version = "0.1.0"
+description = "Rate limiting for Redis that survives concurrency: atomic multi-key spends, and refunds."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [{ name = "Parham Roozmand" }]
+keywords = ["rate-limit", "rate-limiting", "redis", "throttle", "asyncio", "lua"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Framework :: AsyncIO",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Internet :: WWW/HTTP",
+]
+dependencies = ["redis>=5.0"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.3", "pytest-asyncio>=0.26", "pytest-cov>=6.0", "ruff>=0.8"]
+
+[project.urls]
+Homepage = "https://github.com/Nappuccino-tlg/redlimit"
+Source = "https://github.com/Nappuccino-tlg/redlimit"
+Issues = "https://github.com/Nappuccino-tlg/redlimit/issues"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+redlimit = ["lua/*.lua"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "session"
+asyncio_default_test_loop_scope = "session"
+testpaths = ["tests"]
+addopts = "-q --cov=redlimit --cov-report=term-missing"
+
+[tool.coverage.report]
+exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "UP", "B", "C4", "SIM", "RUF"]
+# N818 wants RateLimitedError. This name is in the public API and `except RateLimited:`
+# is what a caller writes; the suffix would buy convention at the cost of the sentence.
+ignore = ["N818"]
