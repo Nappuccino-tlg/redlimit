@@ -69,6 +69,34 @@ async def sign_in(email: str, password: str, ip: str) -> User:
 Signing in correctly forty times in a row costs nothing. Guessing gets ten tries, however
 the guesses are arranged.
 
+## With FastAPI
+
+```bash
+pip install "redlimit[fastapi]"
+```
+
+```python
+from fastapi import Depends
+from redlimit import SlidingWindow
+from redlimit.fastapi import limit
+
+links = SlidingWindow(redis, limit=30, window=3600)
+
+
+@app.post("/links", dependencies=[Depends(limit(links))])
+async def create_link(): ...
+```
+
+Keyed on the path and the peer address by default, so two endpoints sharing a limiter keep
+separate budgets. Pass your own `key` function for anything else. A refusal becomes a 429
+carrying `Retry-After`, because a client told to slow down and not told for how long
+retries immediately.
+
+The dependency answers before the handler runs, which is the right shape for "this
+endpoint, this often" and the wrong one as soon as the decision depends on something the
+handler learns. Sign-in is that case: use `attempt()` inside the handler, where a refund
+is still possible.
+
 ## Several keys, one answer
 
 Per-IP alone lets an attacker spread guesses for one account across a botnet. Per-account
@@ -90,9 +118,23 @@ plus however many times you were told no.
 | | `FixedWindow` | `SlidingWindow` |
 |---|---|---|
 | Redis keys per limiter key | 1 | 2 |
-| Reads per attempt | 0 | 1 |
 | Boundary burst | up to 2× the limit | no |
 | Exact | yes, within the window | approximate |
+| Median latency | 1.10 ms | 1.14 ms |
+| p99 latency | 2.41 ms | 2.14 ms |
+| Bytes per caller | 72 | 80 |
+
+Measured by [`benchmarks/compare.py`](benchmarks/compare.py) — 20,000 attempts over 2,000
+callers against Redis 7.4 in Docker on a laptop, connection pool warmed first so the
+numbers belong to the limiter and not to TCP.
+
+The latency column is the useful surprise: there is nothing in it. `SlidingWindow` does
+strictly more work — an extra read per key, arithmetic on top — and lands inside the noise
+of `FixedWindow`, because both are one round trip and the round trip is the cost. So the
+choice between them is not a performance question. Pick on semantics.
+
+The memory column is measured inside a single window; `SlidingWindow` holds a second key
+once traffic spans two, so budget roughly double at steady state.
 
 `FixedWindow` counts per clock-aligned window. A caller can spend the whole budget just
 before a boundary and the whole of the next just after, so twice the limit passes in a
@@ -134,6 +176,7 @@ is atomic.
 ```bash
 docker run -d -p 6379:6379 redis:7-alpine
 pytest
+python benchmarks/compare.py     # the table above, on your own hardware
 ```
 
 The concurrency tests warm the connection pool before they race. Without that they are
