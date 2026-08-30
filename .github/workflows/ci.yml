@@ -28,7 +28,7 @@ jobs:
       TEST_REDIS_URL: redis://localhost:6379/15
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - uses: actions/setup-python@v6
         with:
