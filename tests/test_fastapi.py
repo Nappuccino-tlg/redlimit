@@ -107,3 +107,11 @@ async def test_client_ip_ignores_a_forwarded_header(redis):
 def test_hashed_is_stable_and_bounded():
     assert hashed(" Alice@Example.COM ") == hashed("alice@example.com")
     assert len(hashed("a" * 5000)) == 32
+
+
+def test_hashed_is_the_same_function_the_package_exports():
+    """It lives in the core, not here: hashing an identifier has nothing to do with
+    FastAPI, and a caller without one still needs it to key a limiter on an email."""
+    from redlimit import hashed as from_core
+
+    assert from_core is hashed

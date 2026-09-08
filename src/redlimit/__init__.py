@@ -14,6 +14,7 @@ from redlimit._core import (
     Limiter,
     RateLimited,
     SlidingWindow,
+    hashed,
 )
 
 __all__ = [
@@ -23,6 +24,7 @@ __all__ = [
     "Limiter",
     "RateLimited",
     "SlidingWindow",
+    "hashed",
 ]
 
 __version__ = "0.1.0"

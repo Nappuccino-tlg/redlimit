@@ -19,10 +19,9 @@ that is the only place it is mentioned.
 
 from __future__ import annotations
 
-import hashlib
 from collections.abc import Awaitable, Callable, Sequence
 
-from redlimit._core import Limiter
+from redlimit._core import Limiter, hashed
 
 try:
     from fastapi import Depends, HTTPException, Request, status
@@ -31,7 +30,7 @@ except ModuleNotFoundError as exc:  # pragma: no cover - exercised by import, no
         "redlimit.fastapi needs FastAPI installed: pip install fastapi"
     ) from exc
 
-__all__ = ["client_ip", "limit"]
+__all__ = ["client_ip", "hashed", "limit"]
 
 KeyFunc = Callable[[Request], Sequence[str] | str]
 
@@ -79,16 +78,5 @@ def limit(
     return dependency
 
 
-def hashed(value: str) -> str:
-    """A fixed-width, log-safe stand-in for a caller-supplied identifier.
-
-    Emails and usernames make good limiter keys and poor Redis keys: unbounded in length,
-    and personal data sitting in a keyspace that any `KEYS *` will print. The hash is not
-    a security measure -- anyone can compute it -- it just keeps the address out of the
-    dump and the key a predictable size.
-    """
-    return hashlib.sha256(value.strip().lower().encode()).hexdigest()[:32]
-
-
 # Re-exported so `from redlimit.fastapi import Depends` is not needed alongside this one.
-__all__ += ["Depends", "hashed"]
+__all__ += ["Depends"]

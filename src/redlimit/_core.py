@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 from collections.abc import Sequence
 from dataclasses import dataclass
 from importlib import resources
@@ -41,6 +42,18 @@ class Decision:
 
     def __bool__(self) -> bool:
         return self.allowed
+
+
+def hashed(value: str) -> str:
+    """A fixed-width, log-safe stand-in for a caller-supplied identifier.
+
+    Emails and usernames make good limiter keys and poor Redis keys: unbounded in length,
+    and personal data sitting in a keyspace any `KEYS *` will print. This is not a security
+    measure -- anyone can compute it -- it just keeps the address out of the dump and the
+    key a predictable size. Case and surrounding space are normalised, so " Alice@X.com "
+    and "alice@x.com" cannot buy two budgets for one account.
+    """
+    return hashlib.sha256(value.strip().lower().encode()).hexdigest()[:32]
 
 
 def _load(name: str) -> str:
