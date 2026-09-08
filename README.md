@@ -7,15 +7,10 @@ a hole in it.
 [![CI](https://github.com/Nappuccino-tlg/redlimit/actions/workflows/ci.yml/badge.svg)](https://github.com/Nappuccino-tlg/redlimit/actions/workflows/ci.yml)
 ![Python](https://img.shields.io/badge/python-3.10%20--%203.13-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
+[![PyPI](https://img.shields.io/pypi/v/redlimit)](https://pypi.org/project/redlimit/)
 
 ```bash
 pip install redlimit
-```
-
-Not on PyPI yet — until then, from the tag:
-
-```bash
-pip install "redlimit @ git+https://github.com/Nappuccino-tlg/redlimit@v0.1.0"
 ```
 
 ## The limiter everybody writes
