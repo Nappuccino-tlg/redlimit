@@ -12,6 +12,12 @@ a hole in it.
 pip install redlimit
 ```
 
+Not on PyPI yet — until then, from the tag:
+
+```bash
+pip install "redlimit @ git+https://github.com/Nappuccino-tlg/redlimit@v0.1.0"
+```
+
 ## The limiter everybody writes
 
 ```python
