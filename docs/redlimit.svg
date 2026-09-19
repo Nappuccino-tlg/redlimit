@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="250" viewBox="0 0 860 250" role="img" aria-label="Fifty simultaneous attempts against a limit of five: the check-then-increment limiter allowed all fifty; redlimit allowed exactly five">
+<title>Fifty simultaneous attempts against a limit of five: the check-then-increment limiter allowed all fifty; redlimit allowed exactly five</title>
+  <rect x="0.5" y="0.5" width="859" height="249" rx="10" fill="#0d1117" stroke="#30363d"/>
+
+  <text x="32" y="38" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Roboto,'Helvetica Neue',Arial,sans-serif" font-size="16" font-weight="600" fill="#e6edf3">Fifty attempts arriving together, against a limit of five</text>
+  <text x="32" y="60" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Roboto,'Helvetica Neue',Arial,sans-serif" font-size="13" fill="#898781">Measured against a real Redis with a warm connection pool.</text>
+
+  <text x="32" y="86" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Roboto,'Helvetica Neue',Arial,sans-serif" font-size="13.5" fill="#c3c2b7">the limiter everybody writes</text>
+  <text x="828" y="86" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Roboto,'Helvetica Neue',Arial,sans-serif" font-size="13.5" font-weight="600" fill="#e6edf3" text-anchor="end">50 of 50 got through</text>
+  <rect x="32" y="96" width="796" height="18" rx="4" fill="#21262d"/>
+  <path d="M32 96 H824.0 a4 4 0 0 1 4 4 v10 a4 4 0 0 1 -4 4 H32 Z" fill="#3987e5"/>
+
+  <text x="32" y="154" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Roboto,'Helvetica Neue',Arial,sans-serif" font-size="13.5" fill="#c3c2b7">redlimit</text>
+  <text x="828" y="154" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Roboto,'Helvetica Neue',Arial,sans-serif" font-size="13.5" font-weight="600" fill="#e6edf3" text-anchor="end">5 of 50 got through</text>
+  <rect x="32" y="164" width="796" height="18" rx="4" fill="#21262d"/>
+  <path d="M32 164 H107.6 a4 4 0 0 1 4 4 v10 a4 4 0 0 1 -4 4 H32 Z" fill="#3987e5"/>
+
+  <line x1="111.6" y1="92" x2="111.6" y2="192" stroke="#d03b3b" stroke-width="2" stroke-dasharray="3 3"/>
+  <text x="119.6" y="208" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Roboto,'Helvetica Neue',Arial,sans-serif" font-size="12.5" fill="#d03b3b" font-weight="600">the limit</text>
+</svg>

@@ -28,6 +28,8 @@ every attempt reads the same number before any of them writes, and every attempt
 through. Measured against a real Redis with a warm connection pool, that code let **50 of
 50 simultaneous attempts past a limit of 5**.
 
+![Fifty simultaneous attempts against a limit of five: the check-then-increment limiter allowed all fifty; redlimit allowed exactly five](docs/redlimit.svg)
+
 The gap between the read and the write is the whole problem, and no amount of care in
 Python closes it — the fix has to happen inside Redis, which runs a script to completion
 with nothing interleaved. That is all this library is.
